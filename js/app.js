@@ -11,7 +11,7 @@ const displayPhones = (phones, dataLimit) =>{
     // display only 9 phones
        const showAll = document.getElementById('show-all');
        if(dataLimit && phones.length > 10 ){
-        phones = phones.slice(0, 9);
+        phones = phones.slice(0, 10);
         showAll.classList.remove('d-none');
        }
        else{
@@ -38,7 +38,7 @@ const displayPhones = (phones, dataLimit) =>{
                     <div class="card-body">
                       <h5 class="card-title">${phone.phone_name}</h5>
                       <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                      <button onclick="loadPhoneDetails('${phone.slug}')" id="show-details" class="btn btn-primary" type="submit">Phone Details</button>
+                      <button onclick="loadPhoneDetails('${phone.slug}')" id="show-details" class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">Phone Details</button>
                     </div>
         `;
         phonesContainer.appendChild(phoneDiv);
@@ -59,12 +59,12 @@ const phoneShow = dataLimit =>{
 // click button only 9 phones show 
 document.getElementById('search-btn').addEventListener('click', function(){
     // srart loader
-    phoneShow(9);
+    phoneShow(10);
 })
 // search input field enter key 
 document.getElementById('phone-field').addEventListener('keypress', function(e){
     if(e.key === "Enter"){
-       phoneShow(9);
+       phoneShow(10);
     }
 })
 
@@ -89,9 +89,19 @@ const loadPhoneDetails = async id =>{
     const url = `https://openapi.programming-hero.com/api/phone/${id}`;
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data.data);
+    displayPhoneDetails(data.data);
 }
 
-const displayPhoneDetails = (phone) =>{
-     console.log(phone);
+const displayPhoneDetails = phone =>{
+    // console.log(phone);
+    const modalTitle = document.getElementById('phoneDetailModalLabel');
+    modalTitle.innerText = phone.name;
+    const phoneDetails = document.getElementById('phone-details');
+    // console.log(phone.mainFeatures.storage);
+    phoneDetails.innerHTML = `
+        <p>Release Date: ${phone.releaseDate ? phone.releaseDate : 'No Release Date'}</p>
+        <p>Storage: ${phone.mainFeatures ? phone.mainFeatures.storage : "No Storage"}</p>
+        <p>Others: ${phone.others ? phone.others.Bluetooth : "no bluetooth"}</p>
+        <p>${phone.mainFeatures.sensors ? phone.mainFeatures.sensors[0] : 'no sensor'}</p>
+    `
 }
