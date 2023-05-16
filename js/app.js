@@ -34,16 +34,28 @@ const displayPhones = (phones) =>{
                     </div>
         `;
         phonesContainer.appendChild(phoneDiv);
-        
     });
-}
+
+    // stop loader and spinner
+    toggleSpinner(false);
+}   
 
 document.getElementById('search-btn').addEventListener('click', function(){
+    // srart loader
+    toggleSpinner(true);
     const searchField = document.getElementById('phone-field');
     const searchText = searchField.value;
     loadPhones(searchText);
     searchField.value = '';
 
 })
-
+const loadSpinner = document.getElementById('loader');
+const toggleSpinner = isLoading => {
+    if(isLoading){
+        loadSpinner.classList.remove('d-none');
+    }
+    else{
+        loadSpinner.classList.add('d-none');
+    }
+}
 // loadPhones();
