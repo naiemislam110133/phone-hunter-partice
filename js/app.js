@@ -8,6 +8,17 @@ const loadPhones = async(searchText) =>{
 const displayPhones = (phones) =>{
     const phonesContainer = document.getElementById('phones-container');
     phonesContainer.textContent= '';
+    // display only 10 phones
+       phones = phones.slice(0, 10);
+
+    // No Phone Found 
+    const noFoundPhone = document.getElementById('no-found-phone');
+    if(phones.length === 0){
+        noFoundPhone.classList.remove('d-none');
+    }
+    else{
+        noFoundPhone.classList.add('d-none');
+    }
 
     // get every phone for for each 
     phones.forEach(phone => {
