@@ -1,15 +1,22 @@
-const loadPhones = async(searchText) =>{
+const loadPhones = async(searchText, dataLimit) =>{
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
     const res = await fetch(url);
     const data = await res.json();
-    displayPhones(data.data);
+    displayPhones(data.data, dataLimit);
 }
 
-const displayPhones = (phones) =>{
+const displayPhones = (phones, dataLimit) =>{
     const phonesContainer = document.getElementById('phones-container');
     phonesContainer.textContent= '';
-    // display only 10 phones
-       phones = phones.slice(0, 10);
+    // display only 9 phones
+       const showAll = document.getElementById('show-all');
+       if(dataLimit && phones.length > 10 ){
+        phones = phones.slice(0, 9);
+        showAll.classList.remove('d-none');
+       }
+       else{
+        showAll.classList.add('d-none');
+       }
 
     // No Phone Found 
     const noFoundPhone = document.getElementById('no-found-phone');
@@ -40,15 +47,33 @@ const displayPhones = (phones) =>{
     toggleSpinner(false);
 }   
 
-document.getElementById('search-btn').addEventListener('click', function(){
-    // srart loader
+// using commom function
+const phoneShow = (dataLimit) =>{
     toggleSpinner(true);
     const searchField = document.getElementById('phone-field');
     const searchText = searchField.value;
-    loadPhones(searchText);
+    loadPhones(searchText, dataLimit);
     searchField.value = '';
-
+}
+// click button only 9 phones show 
+document.getElementById('search-btn').addEventListener('click', function(){
+    // srart loader
+    phoneShow(10);
 })
+
+// click button all phone show 
+document.getElementById('btn-show-all').addEventListener('click', function(){
+    console.log('clickded buttn');
+    phoneShow();
+})
+// search input field enter key 
+document.getElementById('phone-field').addEventListener('keypress', function(e){
+    if(e.key === "Enter"){
+       phoneShow(10);
+    }
+})
+
+// do toggler spinner
 const loadSpinner = document.getElementById('loader');
 const toggleSpinner = isLoading => {
     if(isLoading){
