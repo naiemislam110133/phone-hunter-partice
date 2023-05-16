@@ -10,7 +10,7 @@ const displayPhones = (phones, dataLimit) =>{
     phonesContainer.textContent= '';
     // display only 9 phones
        const showAll = document.getElementById('show-all');
-       if(dataLimit && phones.length > 10 ){
+       if( dataLimit && phones.length > 10 ){
         phones = phones.slice(0, 10);
         showAll.classList.remove('d-none');
        }
@@ -53,7 +53,6 @@ const phoneShow = dataLimit =>{
     toggleSpinner(true);
     const searchField = document.getElementById('phone-field');
     const searchText = searchField.value;
-    searchField.value = '';
     loadPhones(searchText, dataLimit);
 }
 // click button only 9 phones show 
